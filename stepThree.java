@@ -6,6 +6,7 @@
 * @since   2021-12-20
 */
 
+import java.util.Random;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -15,13 +16,15 @@ import java.util.Scanner;
 */
 final class stepThree {
 
-    private static int numFours = 1; // Number of ships that take up 4 squares
+    private static int numFours = 9910; // Number of ships that take up 4 squares
     private static int numThrees = 3; // Number of ships that take up 3 squares
     private static int numTwos = 2; // Number of ships that take up 2 squares
     private static int numOnes = 2; // Number of ships that take up 1 squares
     private static int numRows = 10; // The amount of rows in the grid
     private static int numCol = 10; // The amount of columns in the grid
     private static String blank = "\u2588"; // A black background
+    private static final ArrayList<ArrayList<String>> fail =
+            new ArrayList<ArrayList<String>>();
 
     /**
     * Prevent instantiation
@@ -35,17 +38,28 @@ final class stepThree {
         throw new IllegalStateException("Cannot be instantiated");
     }
 
+    static void printGrid(final ArrayList<ArrayList<String>> grid) {
+        for (int column = 0; column < numCol; column++) {
+            for (int row = 0; row < numRows; row++) {
+                System.out.print(grid.get(column).get(row) + " ");
+            }
+            System.out.print("\n");
+        }
+    }
+
 
     /*
     * Checks if vertical is valid
     */
     static boolean isVerticalValid(final ArrayList<ArrayList<String>> initialGrid, final int shipSize) {
 
-        for (int counter = 0; counter < numCol; counter++) { // checks all the columns
+        for (int column = 0; column < numCol; column++) { // checks all the columns
             int count = 0;
-            for (int counterTwo = 0; counterTwo < shipSize; counterTwo++) { // checks the rows
-                if (initialGrid.get(counter).get(counterTwo) == blank) {
+            for (int row = 0; row < numRows; row++) { // checks the rows
+                if (initialGrid.get(row).get(column) == blank) {
                     count++;
+                } else {
+                    count = 0;
                 }
                 if (count == shipSize) {
                     return true;
@@ -60,6 +74,12 @@ final class stepThree {
 
     // Generates the fours
     static ArrayList<ArrayList<String>> generateFours(final ArrayList<ArrayList<String>> initialGrid) {
+        // This array list is only used to return that the attempt has failed.
+        final ArrayList<ArrayList<String>> fail =
+            new ArrayList<ArrayList<String>>();
+        fail.add(new ArrayList<String>());
+        fail.get(0).add("fail");
+
         ArrayList<ArrayList<String>> returnGrid =
             new ArrayList<ArrayList<String>>();
         returnGrid = initialGrid;
@@ -70,23 +90,22 @@ final class stepThree {
             orientation = 0; // temporary to make it always vertical 
             // Vertical
             if (orientation == 0 && isVerticalValid(returnGrid, 4)) {
-                final int randCol = (int) (Math.random() * 9); // Picks a random column
-                final int randRow = (int) (Math.random() * (9 - 4)); // Picks a random row from the 0th to the last which happens to be 4
-                System.out.println("The random column is " + randCol);
-                System.out.println("The random row is " + randRow);
+                Random rand = new Random();
+                Random randTwo = new Random();
+                final int randCol = rand.nextInt((9 - 0) + 1); // Picks a random column that is not higher than 10
+                final int randRow = randTwo.nextInt((6 - 0) + 1); // Picks a random row from the 0th to the last which happens to be 4
 
                 int count = 0;
                 for (int counter = 0; counter < 4; counter++) {
                     if (returnGrid.get(randRow + counter).get(randCol) == blank) {
                         count++;
-                        System.out.println("The count is " + count);
                     }
                     if (count == 4) {
-                        for (int counterTwo = 0; counterTwo < 4; counterTwo++) {
-                            returnGrid.get(counter + randRow - counterTwo).remove(randCol);
-                            returnGrid.get(counter + randRow - counterTwo).add(randCol, "4");
+                        for (int row = 0; row < 4; row++) {
+                            returnGrid.get(randRow + row).remove(randCol);
+                            returnGrid.get(randRow + row).add(randCol, "4");
                         }
-                    shipNotGenerated = false; // a ship has now been generated 
+                        shipNotGenerated = false; // a ship has now been generated 
                     }
                 }
                 
@@ -95,6 +114,8 @@ final class stepThree {
             } else if (orientation == 1) {
 
                 shipNotGenerated = false; // a ship has now been generated
+            } else {
+                return fail;
             }
         } while (shipNotGenerated);
         return returnGrid;
@@ -112,7 +133,12 @@ final class stepThree {
         returnGrid = initialGrid;
 
         for (int counter = 0; counter < numFours; counter++) {
-            returnGrid = generateFours(returnGrid);
+            if (returnGrid.get(0).get(0) == "fail") {
+                System.out.println("Could not print more fours");
+                break;
+            } else {
+                returnGrid = generateFours(returnGrid);
+            }
         }
 
 
@@ -143,12 +169,14 @@ final class stepThree {
         }
         finalGrid = generateShips(grid);
 
-        finalGridStr = finalGrid.toString();
-        finalGridStr = finalGridStr.replaceAll("\\[", "\n");
-        finalGridStr = finalGridStr.replaceAll("\\p{Punct}", "");
-        System.out.print("\033[0;34m"); // Makes text color blue
-        System.out.println(finalGridStr);
-        System.out.print("\033[0m"); // resets text color and background color
+        if (finalGrid.get(0).get(0) != "fail") {
+            finalGridStr = finalGrid.toString();
+            finalGridStr = finalGridStr.replaceAll("\\[", "\n");
+            finalGridStr = finalGridStr.replaceAll("\\p{Punct}", "");
+            System.out.print("\033[0;34m"); // Makes text color blue
+            System.out.println(finalGridStr);
+            System.out.print("\033[0m"); // resets text color and background color
+        }
     }
 
 
