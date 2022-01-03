@@ -16,12 +16,26 @@ import java.util.Scanner;
 */
 final class stepThree {
 
-    private static int numFours = 1; // Number of ships that take up 4 squares - default = 1
+    private static int numFours = 3; // Number of ships that take up 4 squares - default = 1
     private static int numThrees = 0; // Number of ships that take up 3 squares - defualt = 3
     private static int numTwos = 0; // Number of ships that take up 2 squares - default = 2
     private static int numOnes = 0; // Number of ships that take up 1 squares - default = 2
     private static int numRows = 10; // The amount of rows in the grid - defualt = 10
     private static int numCol = 10; // The amount of columns in the grid - defualt = 10
+
+    private static ArrayList<ArrayList<Integer>> foursCoords = new ArrayList<ArrayList<Integer>>();
+    private static ArrayList<ArrayList<Integer>> threesCoords = new ArrayList<ArrayList<Integer>>();
+    private static ArrayList<ArrayList<Integer>> twosCoords = new ArrayList<ArrayList<Integer>>();
+    private static ArrayList<ArrayList<Integer>> onesCoords = new ArrayList<ArrayList<Integer>>();
+    private static ArrayList<ArrayList<Integer>> foursCoordsEnemy = new ArrayList<ArrayList<Integer>>();
+    private static ArrayList<ArrayList<Integer>> threesCoordsEnemy = new ArrayList<ArrayList<Integer>>();
+    private static ArrayList<ArrayList<Integer>> twosCoordsEnemy = new ArrayList<ArrayList<Integer>>();
+    private static ArrayList<ArrayList<Integer>> onesCoordsEnemy = new ArrayList<ArrayList<Integer>>();
+
+    private static int FOUR = 4;
+    private static int THREE = 3;
+    private static int TWO = 2;
+    private static int ONE = 1;
 
     private static String blank = "\u2588"; // A blank background
 
@@ -40,6 +54,7 @@ final class stepThree {
 
     private static String hit = "H";
     private static String miss = "M";
+    private static String sunk = "S";
 
     private static char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
     private static int maxCharValue = 9;
@@ -55,6 +70,71 @@ final class stepThree {
     private stepThree() {
         throw new IllegalStateException("Cannot be instantiated");
     }
+
+
+    static void checkSink(ArrayList<ArrayList<String>> grid, String who, int shipSize) {
+        // Checks who is attacking
+        if (who.equals("enemy")) {
+
+            // Checks the fours
+            if (shipSize == FOUR) {
+                // Checks every ship
+                for (int ship = 0; ship < numFours; ship++) {
+                    int count = 0;
+                    // Checks each set of coordinates
+                    for (int shipCoord = 0; shipCoord < (FOUR * 2); shipCoord += 2) {
+                        if (grid.get(foursCoords.get(ship).get(shipCoord)).get(foursCoords.get(ship).get(shipCoord + 1)) == hit) {
+                            count++;
+                        } else {
+                            break;
+                        }
+                        if (count == FOUR) {
+                            for (int counter = 0; counter < (FOUR * 2); counter += 2) {
+                                grid.get(foursCoords.get(ship).get(shipCoord - counter)).remove(foursCoords.get(ship).get(shipCoord - counter + 1));
+                                grid.get(foursCoords.get(ship).get(shipCoord - counter)).add(foursCoords.get(ship).get(shipCoord - counter + 1), sunk);
+                            }
+                            System.out.print("\n\nSHIP SUNK\n\n");
+                        }
+                    }
+                }
+            } else if (shipSize == THREE) {
+            } else if (shipSize == TWO) {
+            } else {
+            }
+
+        // If the player is attacking
+        } else {
+            // Checks the fours
+            if (shipSize == FOUR) {
+                // Checks every ship
+                for (int ship = 0; ship < numFours; ship++) {
+                    int count = 0;
+                    // Checks each set of coordinates
+                    for (int shipCoord = 0; shipCoord < (FOUR * 2); shipCoord += 2) {
+                        if (grid.get(foursCoordsEnemy.get(ship).get(shipCoord)).get(foursCoordsEnemy.get(ship).get(shipCoord + 1)) == hit) {
+                            count++;
+                        }
+                        if (count == FOUR) {
+                            for (int counter = 0; counter < (FOUR * 2); counter += 2) {
+                                // For some reason, this is not removing it
+                                grid.get(foursCoordsEnemy.get(ship).get(shipCoord - counter)).remove(foursCoordsEnemy.get(ship).get(shipCoord - counter + 1));
+                                System.out.println("\n\n" + grid + "\n");
+                                grid.get(foursCoordsEnemy.get(ship).get(shipCoord - counter)).add(foursCoordsEnemy.get(ship).get(shipCoord - counter + 1), sunk);
+                            }
+                        }
+                    }
+                }
+            } else if (shipSize == THREE) {
+            } else if (shipSize == TWO) {
+            } else {
+            }
+        }
+    }
+
+
+
+
+
 
     /**
     * Determines if someone has won.
@@ -335,11 +415,27 @@ final class stepThree {
                 playerTurn(enemyGrid);
 
                 /*
+                * Will check each of the coordinates of the ships to
+                * determine if they have been sunk
+                */
+                for (int counter = 1; counter < 5; counter++) {
+                    checkSink(enemyGrid, "player", counter);
+                }
+
+                /*
                 * This function (as with all java functions) uses pointers,
                 * which allows it to change the player grid
                 * without having to return the arrays.
                 */
                 enemyTurn(playerGrid);                
+
+                /*
+                * Will check each of the coordinates of the ships to
+                * determine if they have been sunk
+                */
+    //            for (int counter = 1; counter < 5; counter++) {
+  //                  checkSink(enemyGrid, "enemy", counter);
+//                }
 
                 /*
                 * Waits 2 second so the
@@ -408,6 +504,8 @@ final class stepThree {
     * @param grid the grid
     */
     static void printEnemyGrid(ArrayList<ArrayList<String>> printGrid) {
+        System.out.println(printGrid);
+
         ArrayList<ArrayList<String>> grid =
             new ArrayList<ArrayList<String>>();
 
@@ -438,6 +536,10 @@ final class stepThree {
 
                 if (printGrid.get(row).get(column) == hit) {
                     grid.get(row).add(column, hit);
+                    // Sets the color to red
+                    System.out.print(RED);
+                } else if (printGrid.get(row).get(column) == sunk) {
+                    grid.get(row).add(column, sunk);
                     // Sets the color to red
                     System.out.print(RED);
                 } else if (printGrid.get(row).get(column) == miss) {
@@ -592,7 +694,7 @@ final class stepThree {
     * @param shipSize how large the ship is
     * @return the new grid with ships
     */
-    static ArrayList<ArrayList<String>> generateEachShip(final ArrayList<ArrayList<String>> initialGrid, final int shipSize) {
+    static ArrayList<ArrayList<String>> generateEachShip(final ArrayList<ArrayList<String>> initialGrid, final int shipSize, final String who) {
         // This array list is only used to return that the attempt has failed.
         final ArrayList<ArrayList<String>> fail =
             new ArrayList<ArrayList<String>>();
@@ -622,10 +724,77 @@ final class stepThree {
                         count++;
                     }
                     if (count == shipSize) {
+
+                        // Generates the ship
                         for (int row = 0; row < shipSize; row++) {
                             returnGrid.get(randRow + row).remove(randCol);
                             returnGrid.get(randRow + row).add(randCol, "" + shipSize);
+
+                            // Keeps track of the players ships
+                            if (who.equals("player")) {
+                                if (shipSize == 4) {
+                                    /*
+                                    * Adds the new ship to its memory so
+                                    * that it can tell if a specific one is sunk
+                                    */
+                                    foursCoords.get(foursCoords.size() - 1).add(randRow + row);
+                                    foursCoords.get(foursCoords.size() - 1).add(randCol);
+                                } else if (shipSize == 3) {
+                                    /*
+                                    * Adds the new ship to its memory so
+                                    * that it can tell if a specific one is sunk
+                                    */
+                                    threesCoords.get(threesCoords.size() - 1).add(randRow + row);
+                                    threesCoords.get(threesCoords.size() - 1).add(randCol);
+                                 } else if (shipSize == 2) {
+                                    /*
+                                    * Adds the new ship to its memory so
+                                    * that it can tell if a specific one is sunk
+                                    */
+                                    twosCoords.get(twosCoords.size() - 1).add(randRow + row);
+                                    twosCoords.get(twosCoords.size() - 1).add(randCol);
+                                } else {
+                                    /*
+                                    * Adds the new ship to its memory so
+                                    * that it can tell if a specific one is sunk
+                                    */
+                                    onesCoords.get(onesCoords.size() - 1).add(randRow + row);
+                                    onesCoords.get(onesCoords.size() - 1).add(randCol);
+                                }
+                            } else {
+                                if (shipSize == 4) {
+                                    /*
+                                    * Adds the new ship to its memory so
+                                    * that it can tell if a specific one is sunk
+                                    */
+                                    foursCoordsEnemy.get(foursCoordsEnemy.size() - 1).add(randRow + row);
+                                    foursCoordsEnemy.get(foursCoordsEnemy.size() - 1).add(randCol);
+                                } else if (shipSize == 3) {
+                                    /*
+                                    * Adds the new ship to its memory so
+                                    * that it can tell if a specific one is sunk
+                                    */
+                                    threesCoordsEnemy.get(threesCoordsEnemy.size() - 1).add(randRow + row);
+                                    threesCoordsEnemy.get(threesCoordsEnemy.size() - 1).add(randCol);
+                                 } else if (shipSize == 2) {
+                                    /*
+                                    * Adds the new ship to its memory so
+                                    * that it can tell if a specific one is sunk
+                                    */
+                                    twosCoordsEnemy.get(twosCoordsEnemy.size() - 1).add(randRow + row);
+                                    twosCoordsEnemy.get(twosCoordsEnemy.size() - 1).add(randCol);
+                                } else {
+                                    /*
+                                    * Adds the new ship to its memory so
+                                    * that it can tell if a specific one is sunk
+                                    */
+                                    onesCoordsEnemy.get(onesCoordsEnemy.size() - 1).add(randRow + row);
+                                    onesCoordsEnemy.get(onesCoordsEnemy.size() - 1).add(randCol);
+                                }
+                            }
+
                         }
+
                         // A ship has now been generated
                         shipNotGenerated = false;
                     }
@@ -651,6 +820,69 @@ final class stepThree {
                         for (int column = 0; column < shipSize; column++) {
                             returnGrid.get(randRow).remove(randCol + column);
                             returnGrid.get(randRow).add(randCol + column, Integer.toString(shipSize));
+
+                            // Keeps track of the players ships
+                            if (who.equals("player")) {
+                                if (shipSize == 4) {
+                                    /*
+                                    * Adds the new ship to its memory so
+                                    * that it can tell if a specific one is sunk
+                                    */
+                                    foursCoords.get(foursCoords.size() - 1).add(randRow);
+                                    foursCoords.get(foursCoords.size() - 1).add(randCol + column);
+                                } else if (shipSize == 3) {
+                                    /*
+                                    * Adds the new ship to its memory so
+                                    * that it can tell if a specific one is sunk
+                                    */
+                                    threesCoords.get(threesCoords.size() - 1).add(randRow);
+                                    threesCoords.get(threesCoords.size() - 1).add(randCol + column);
+                                 } else if (shipSize == 2) {
+                                    /*
+                                    * Adds the new ship to its memory so
+                                    * that it can tell if a specific one is sunk
+                                    */
+                                    twosCoords.get(twosCoords.size() - 1).add(randRow);
+                                    twosCoords.get(twosCoords.size() - 1).add(randCol + column);
+                                } else {
+                                    /*
+                                    * Adds the new ship to its memory so
+                                    * that it can tell if a specific one is sunk
+                                    */
+                                    onesCoords.get(onesCoords.size() - 1).add(randRow);
+                                    onesCoords.get(onesCoords.size() - 1).add(randCol + column);
+                                }
+                            } else {
+                                if (shipSize == 4) {
+                                    /*
+                                    * Adds the new ship to its memory so
+                                    * that it can tell if a specific one is sunk
+                                    */
+                                    foursCoordsEnemy.get(foursCoordsEnemy.size() - 1).add(randRow);
+                                    foursCoordsEnemy.get(foursCoordsEnemy.size() - 1).add(randCol + column);
+                                } else if (shipSize == 3) {
+                                    /*
+                                    * Adds the new ship to its memory so
+                                    * that it can tell if a specific one is sunk
+                                    */
+                                    threesCoordsEnemy.get(threesCoordsEnemy.size() - 1).add(randRow);
+                                    threesCoordsEnemy.get(threesCoordsEnemy.size() - 1).add(randCol + column);
+                                 } else if (shipSize == 2) {
+                                    /*
+                                    * Adds the new ship to its memory so
+                                    * that it can tell if a specific one is sunk
+                                    */
+                                    twosCoordsEnemy.get(twosCoordsEnemy.size() - 1).add(randRow);
+                                    twosCoordsEnemy.get(twosCoordsEnemy.size() - 1).add(randCol + column);
+                                } else {
+                                    /*
+                                    * Adds the new ship to its memory so
+                                    * that it can tell if a specific one is sunk
+                                    */
+                                    onesCoordsEnemy.get(onesCoordsEnemy.size() - 1).add(randRow);
+                                    onesCoordsEnemy.get(onesCoordsEnemy.size() - 1).add(randCol + column);
+                                }
+                            }
                         }
                         // a ship has now been generated
                         shipNotGenerated = false;
@@ -671,7 +903,7 @@ final class stepThree {
     * @param shipSize how large the ship is
     * @return the new grid with ships
     */
-    static ArrayList<ArrayList<String>> generateShips(final ArrayList<ArrayList<String>> initialGrid) {
+    static ArrayList<ArrayList<String>> generateShips(final ArrayList<ArrayList<String>> initialGrid, final String who) {
         ArrayList<ArrayList<String>> returnGrid =
             new ArrayList<ArrayList<String>>();
 
@@ -679,41 +911,61 @@ final class stepThree {
 
         // Makes all the fours
         for (int counter = 0; counter < numFours; counter++) {
+            if (who.equals("player")) {
+                foursCoords.add(new ArrayList<Integer>());
+            } else {
+                foursCoordsEnemy.add(new ArrayList<Integer>());
+            }
             if (returnGrid.get(0).get(0) == "fail") {
                 System.out.println("Could not print " + numFours +" fours");
                 break;
             } else {
-                returnGrid = generateEachShip(returnGrid, 4);
+                returnGrid = generateEachShip(returnGrid, 4, who);
             }
         }
 
         // Makes all the threes
         for (int counter = 0; counter < numThrees; counter++) {
+            if (who.equals("player")) {
+                threesCoords.add(new ArrayList<Integer>());
+            } else {
+                threesCoordsEnemy.add(new ArrayList<Integer>());
+            }
             if (returnGrid.get(0).get(0) == "fail") {
                 System.out.println("Could not print " + numThrees +" threes");
                 break;
             } else {
-                returnGrid = generateEachShip(returnGrid, 3);
+                returnGrid = generateEachShip(returnGrid, 3, who);
             }
         }
 
         // Makes all the twos
         for (int counter = 0; counter < numTwos; counter++) {
+            if (who.equals("player")) {
+                twosCoords.add(new ArrayList<Integer>());
+            } else {
+                twosCoordsEnemy.add(new ArrayList<Integer>());
+            }
             if (returnGrid.get(0).get(0) == "fail") {
                 System.out.println("Could not print " + numTwos +" twos");
                 break;
             } else {
-                returnGrid = generateEachShip(returnGrid, 2);
+                returnGrid = generateEachShip(returnGrid, 2, who);
             }
         }
 
         // Makes all the ones
         for (int counter = 0; counter < numOnes; counter++) {
+            if (who.equals("player")) {
+                onesCoords.add(new ArrayList<Integer>());
+            } else {
+                onesCoordsEnemy.add(new ArrayList<Integer>());
+            }
             if (returnGrid.get(0).get(0) == "fail") {
                 System.out.println("Could not print " + numOnes +" ones");
                 break;
             } else {
-                returnGrid = generateEachShip(returnGrid, 1);
+                returnGrid = generateEachShip(returnGrid, 1, who);
             }
         }
 
@@ -725,7 +977,7 @@ final class stepThree {
     *
     * @return returns the fully made grid
     */
-    static ArrayList<ArrayList<String>> setUpGame() {
+    static ArrayList<ArrayList<String>> setUpGame(final String who) {
         final ArrayList<ArrayList<String>> grid =
             new ArrayList<ArrayList<String>>();
 
@@ -740,7 +992,7 @@ final class stepThree {
                 grid.get(counter).add("\u2588");
             }
         }
-        finalGrid = generateShips(grid);
+        finalGrid = generateShips(grid, who);
 
         return finalGrid;
     }
@@ -763,7 +1015,7 @@ final class stepThree {
 
         ArrayList<ArrayList<String>> playerGrid =
             new ArrayList<ArrayList<String>>();
-        playerGrid = setUpGame();
+        playerGrid = setUpGame("player");
 
         if (playerGrid.get(0).get(0) != "fail") {
             System.out.println(yourGridStr);
@@ -772,12 +1024,13 @@ final class stepThree {
 
         ArrayList<ArrayList<String>> enemyGrid =
             new ArrayList<ArrayList<String>>();
-        enemyGrid = setUpGame();
+        enemyGrid = setUpGame("enemy");
  
         if (enemyGrid.get(0).get(0) != "fail") {
             System.out.println(enemyGridStr);
             // Prints the enemies grid from the players perspective
             printEnemyGrid(enemyGrid);
+            printGrid(enemyGrid);
         }
         if (playerGrid.get(0).get(0) != "fail" && enemyGrid.get(0).get(0) != "fail") {
             playGame(playerGrid, enemyGrid);
