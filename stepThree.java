@@ -16,10 +16,10 @@ import java.util.Scanner;
 */
 final class stepThree {
 
-    private static int numFours = 3; // Number of ships that take up 4 squares - default = 1
-    private static int numThrees = 0; // Number of ships that take up 3 squares - defualt = 3
-    private static int numTwos = 0; // Number of ships that take up 2 squares - default = 2
-    private static int numOnes = 0; // Number of ships that take up 1 squares - default = 2
+    private static int numFours = 1; // Number of ships that take up 4 squares - default = 1
+    private static int numThrees = 3; // Number of ships that take up 3 squares - defualt = 3
+    private static int numTwos = 2; // Number of ships that take up 2 squares - default = 2
+    private static int numOnes = 2; // Number of ships that take up 1 squares - default = 2
     private static int numRows = 10; // The amount of rows in the grid - defualt = 10
     private static int numCol = 10; // The amount of columns in the grid - defualt = 10
 
@@ -83,14 +83,15 @@ final class stepThree {
                     int count = 0;
                     // Checks each set of coordinates
                     for (int shipCoord = 0; shipCoord < (FOUR * 2); shipCoord += 2) {
+
                         if (grid.get(foursCoords.get(ship).get(shipCoord)).get(foursCoords.get(ship).get(shipCoord + 1)) == hit) {
                             count++;
-                        } else {
-                            break;
                         }
+
                         if (count == FOUR) {
                             for (int counter = 0; counter < (FOUR * 2); counter += 2) {
-                                grid.get(foursCoords.get(ship).get(shipCoord - counter)).remove(foursCoords.get(ship).get(shipCoord - counter + 1));
+                                // The "+ 0" is necessary for changing the index from an Integer to an int
+                                grid.get(foursCoords.get(ship).get(shipCoord - counter)).remove(foursCoords.get(ship).get(shipCoord - counter + 1) + 0);
                                 grid.get(foursCoords.get(ship).get(shipCoord - counter)).add(foursCoords.get(ship).get(shipCoord - counter + 1), sunk);
                             }
                             System.out.print("\n\nSHIP SUNK\n\n");
@@ -98,8 +99,68 @@ final class stepThree {
                     }
                 }
             } else if (shipSize == THREE) {
+                // Checks every ship
+                for (int ship = 0; ship < numThrees; ship++) {
+                    int count = 0;
+                    // Checks each set of coordinates
+                    for (int shipCoord = 0; shipCoord < (THREE * 2); shipCoord += 2) {
+
+                        if (grid.get(threesCoords.get(ship).get(shipCoord)).get(threesCoords.get(ship).get(shipCoord + 1)) == hit) {
+                            count++;
+                        }
+
+                        if (count == THREE) {
+                            for (int counter = 0; counter < (THREE * 2); counter += 2) {
+                                // The "+ 0" is necessary for changing the index from an Integer to an int
+                                grid.get(threesCoords.get(ship).get(shipCoord - counter)).remove(threesCoords.get(ship).get(shipCoord - counter + 1) + 0);
+                                grid.get(threesCoords.get(ship).get(shipCoord - counter)).add(threesCoords.get(ship).get(shipCoord - counter + 1), sunk);
+                            }
+                            System.out.print("\n\nSHIP SUNK\n\n");
+                        }
+                    }
+                }
             } else if (shipSize == TWO) {
+                // Checks every ship
+                for (int ship = 0; ship < numTwos; ship++) {
+                    int count = 0;
+                    // Checks each set of coordinates
+                    for (int shipCoord = 0; shipCoord < (TWO * 2); shipCoord += 2) {
+
+                        if (grid.get(twosCoords.get(ship).get(shipCoord)).get(twosCoords.get(ship).get(shipCoord + 1)) == hit) {
+                            count++;
+                        }
+
+                        if (count == TWO) {
+                            for (int counter = 0; counter < (TWO * 2); counter += 2) {
+                                // The "+ 0" is necessary for changing the index from an Integer to an int
+                                grid.get(twosCoords.get(ship).get(shipCoord - counter)).remove(twosCoords.get(ship).get(shipCoord - counter + 1) + 0);
+                                grid.get(twosCoords.get(ship).get(shipCoord - counter)).add(twosCoords.get(ship).get(shipCoord - counter + 1), sunk);
+                            }
+                            System.out.print("\n\nSHIP SUNK\n\n");
+                        }
+                    }
+                }
             } else {
+                // Checks every ship
+                for (int ship = 0; ship < numOnes; ship++) {
+                    int count = 0;
+                    // Checks each set of coordinates
+                    for (int shipCoord = 0; shipCoord < (ONE * 2); shipCoord += 2) {
+
+                        if (grid.get(onesCoords.get(ship).get(shipCoord)).get(onesCoords.get(ship).get(shipCoord + 1)) == hit) {
+                            count++;
+                        }
+
+                        if (count == ONE) {
+                            for (int counter = 0; counter < (ONE * 2); counter += 2) {
+                                // The "+ 0" is necessary for changing the index from an Integer to an int
+                                grid.get(onesCoords.get(ship).get(shipCoord - counter)).remove(onesCoords.get(ship).get(shipCoord - counter + 1) + 0);
+                                grid.get(onesCoords.get(ship).get(shipCoord - counter)).add(onesCoords.get(ship).get(shipCoord - counter + 1), sunk);
+                            }
+                            System.out.print("\n\nSHIP SUNK\n\n");
+                        }
+                    }
+                }
             }
 
         // If the player is attacking
@@ -116,17 +177,71 @@ final class stepThree {
                         }
                         if (count == FOUR) {
                             for (int counter = 0; counter < (FOUR * 2); counter += 2) {
-                                // For some reason, this is not removing it
-                                grid.get(foursCoordsEnemy.get(ship).get(shipCoord - counter)).remove(foursCoordsEnemy.get(ship).get(shipCoord - counter + 1));
-                                System.out.println("\n\n" + grid + "\n");
+                                // The "+ 0" is necessary for changing the index from an Integer to an int
+                                grid.get(foursCoordsEnemy.get(ship).get(shipCoord - counter)).remove(foursCoordsEnemy.get(ship).get(shipCoord - counter + 1) + 0);
                                 grid.get(foursCoordsEnemy.get(ship).get(shipCoord - counter)).add(foursCoordsEnemy.get(ship).get(shipCoord - counter + 1), sunk);
                             }
+                            System.out.print("\n\nSHIP SUNK\n\n");
                         }
                     }
                 }
             } else if (shipSize == THREE) {
+                // Checks every ship
+                for (int ship = 0; ship < numThrees; ship++) {
+                    int count = 0;
+                    // Checks each set of coordinates
+                    for (int shipCoord = 0; shipCoord < (THREE * 2); shipCoord += 2) {
+                        if (grid.get(threesCoordsEnemy.get(ship).get(shipCoord)).get(threesCoordsEnemy.get(ship).get(shipCoord + 1)) == hit) {
+                            count++;
+                        }
+                        if (count == THREE) {
+                            for (int counter = 0; counter < (THREE * 2); counter += 2) {
+                                // The "+ 0" is necessary for changing the index from an Integer to an int
+                                grid.get(threesCoordsEnemy.get(ship).get(shipCoord - counter)).remove(threesCoordsEnemy.get(ship).get(shipCoord - counter + 1) + 0);
+                                grid.get(threesCoordsEnemy.get(ship).get(shipCoord - counter)).add(threesCoordsEnemy.get(ship).get(shipCoord - counter + 1), sunk);
+                            }
+                            System.out.print("\n\nSHIP SUNK\n\n");
+                        }
+                    }
+                }
             } else if (shipSize == TWO) {
+                // Checks every ship
+                for (int ship = 0; ship < numTwos; ship++) {
+                    int count = 0;
+                    // Checks each set of coordinates
+                    for (int shipCoord = 0; shipCoord < (TWO * 2); shipCoord += 2) {
+                        if (grid.get(twosCoordsEnemy.get(ship).get(shipCoord)).get(twosCoordsEnemy.get(ship).get(shipCoord + 1)) == hit) {
+                            count++;
+                        }
+                        if (count == TWO) {
+                            for (int counter = 0; counter < (TWO * 2); counter += 2) {
+                                // The "+ 0" is necessary for changing the index from an Integer to an int
+                                grid.get(twosCoordsEnemy.get(ship).get(shipCoord - counter)).remove(twosCoordsEnemy.get(ship).get(shipCoord - counter + 1) + 0);
+                                grid.get(twosCoordsEnemy.get(ship).get(shipCoord - counter)).add(twosCoordsEnemy.get(ship).get(shipCoord - counter + 1), sunk);
+                            }
+                            System.out.print("\n\nSHIP SUNK\n\n");
+                        }
+                    }
+                }
             } else {
+                // Checks every ship
+                for (int ship = 0; ship < numOnes; ship++) {
+                    int count = 0;
+                    // Checks each set of coordinates
+                    for (int shipCoord = 0; shipCoord < (ONE * 2); shipCoord += 2) {
+                        if (grid.get(onesCoordsEnemy.get(ship).get(shipCoord)).get(onesCoordsEnemy.get(ship).get(shipCoord + 1)) == hit) {
+                            count++;
+                        }
+                        if (count == ONE) {
+                            for (int counter = 0; counter < (ONE * 2); counter += 2) {
+                                // The "+ 0" is necessary for changing the index from an Integer to an int
+                                grid.get(onesCoordsEnemy.get(ship).get(shipCoord - counter)).remove(onesCoordsEnemy.get(ship).get(shipCoord - counter + 1) + 0);
+                                grid.get(onesCoordsEnemy.get(ship).get(shipCoord - counter)).add(onesCoordsEnemy.get(ship).get(shipCoord - counter + 1), sunk);
+                            }
+                            System.out.print("\n\nSHIP SUNK\n\n");
+                        }
+                    }
+                }
             }
         }
     }
@@ -433,9 +548,9 @@ final class stepThree {
                 * Will check each of the coordinates of the ships to
                 * determine if they have been sunk
                 */
-    //            for (int counter = 1; counter < 5; counter++) {
-  //                  checkSink(enemyGrid, "enemy", counter);
-//                }
+                for (int counter = 1; counter < 5; counter++) {
+                    checkSink(enemyGrid, "enemy", counter);
+                }
 
                 /*
                 * Waits 2 second so the
@@ -504,8 +619,7 @@ final class stepThree {
     * @param grid the grid
     */
     static void printEnemyGrid(ArrayList<ArrayList<String>> printGrid) {
-        System.out.println(printGrid);
-
+        // The grid that will be printed
         ArrayList<ArrayList<String>> grid =
             new ArrayList<ArrayList<String>>();
 
@@ -1030,7 +1144,6 @@ final class stepThree {
             System.out.println(enemyGridStr);
             // Prints the enemies grid from the players perspective
             printEnemyGrid(enemyGrid);
-            printGrid(enemyGrid);
         }
         if (playerGrid.get(0).get(0) != "fail" && enemyGrid.get(0).get(0) != "fail") {
             playGame(playerGrid, enemyGrid);
