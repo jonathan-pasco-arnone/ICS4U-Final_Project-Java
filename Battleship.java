@@ -42,12 +42,13 @@ final class Battleship {
     /**
     * The amount of columns in the grid - defualt = 10 - max = 26.
     */
-    private static int numCol = 26;
+    private static int numCol = 10;
 
     /**
     * All of the ship quantities in an array.
     */
-    private static ArrayList<Integer> allShipQuantities = new ArrayList<Integer>();
+    private static ArrayList<Integer> allShipQuantities
+        = new ArrayList<Integer>();
 
     /**
     * The amount of ships * 2 (because player and enemy).
@@ -55,9 +56,11 @@ final class Battleship {
     */
     private static int quantityTypesOfShips = 8;
     /**
-    * A 3D array list holding all of the coordinates for all the ships ever generated.
+    * A 3D array list holding all of the coordinates for all
+    * the ships ever generated.
     */
-    private static ArrayList<ArrayList<ArrayList<Integer>>> allShipCoords = new ArrayList<ArrayList<ArrayList<Integer>>>();
+    private static ArrayList<ArrayList<ArrayList<Integer>>> allShipCoords
+        = new ArrayList<ArrayList<ArrayList<Integer>>>();
 
     /**
     * Four as a constant.
@@ -85,13 +88,13 @@ final class Battleship {
     /**
     * String that tells the player it is their grid.
     */
-    private static String yourGridStr = "=====================\n------Your " +
-                                     "Grid------\n=====================\n";
+    private static String yourGridStr = "=====================\n"
+        + "------Your Grid------\n=====================\n";
     /**
     * String that tells the player that it is the enemies grid.
     */
-    private static String enemyGridStr = "\n\n\n=====================\n------Enemy " +
-                                     "Grid-----\n=====================\n";
+    private static String enemyGridStr = "\n\n\n=====================\n"
+        + "------Enemy Grid-----\n=====================\n";
 
     /**
     * Unicode for changing text color to blue.
@@ -124,6 +127,14 @@ final class Battleship {
     */
     private static String CYAN_BACKGROUND = "\033[46m";
     /**
+    * Unicode for changing text bacground to yellow.
+    */
+    private static String YELLOW_BACKGROUND = "\033[43m";
+    /**
+    * Unicode for changing text bacground to white.
+    */
+    private static String WHITE_BACKGROUND = "\033[47m";
+    /**
     * Unicode for changing text color and background color back
     * to its original form.
     */
@@ -145,7 +156,8 @@ final class Battleship {
     /**
     * Char array of the whole alphabet in capital and lower case.
     */
-    private static char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".toCharArray();
+    private static char[] alphabet = ("ABCDEFGHIJKL"
+        + "MNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz").toCharArray();
     /**
     * The amount of capital letters
     */
@@ -167,12 +179,137 @@ final class Battleship {
         throw new IllegalStateException("Cannot be instantiated");
     }
 
+    /**
+    * Has a variety of pixel arts that can be called and printed.
+    *
+    * @param title the title of the pixel art you want to print
+    */
+    static void pixelArt(final String title) {
+
+        try{
+            BufferedImage image = ImageIO.read(new File("/tmp/input.jpg"));
+
+            image.getGraphics().drawLine(1, 1, image.getWidth()-1, image.getHeight()-1);
+            image.getGraphics().drawLine(1, image.getHeight()-1, image.getWidth()-1, 1);
+
+            ImageIO.write(image, "png", new File("/tmp/output.png"));
+         } catch (IOException e){
+             e.printStackTrace();
+         }
+
+        // 52 columns, 40 rows
+        // Prints a pixel art battleship
+        if (title.equals("ship")) {
+
+            System.out.print(WHITE_BACKGROUND);
+            for (int counter = 0; counter < 28; counter++) {
+                System.out.print(" ");
+            }
+
+            System.out.print(YELLOW_BACKGROUND + " ");
+
+            System.out.print(WHITE_BACKGROUND);
+            for (int counter = 0; counter < 23; counter++) {
+                System.out.print(" ");
+            }
+
+            /*
+            *
+            * Next row 2
+            *
+            */
+            System.out.println();
+
+            System.out.print(WHITE_BACKGROUND);
+            for (int counter = 0; counter < 27; counter++) {
+                System.out.print(" ");
+            }
+
+            System.out.print(YELLOW_BACKGROUND);
+            for (int counter = 0; counter < 3; counter++) {
+                System.out.print(" ");
+            }
+
+            System.out.print(WHITE_BACKGROUND);
+            for (int counter = 0; counter < 22; counter++) {
+                System.out.print(" ");
+            }
+
+            /*
+            *
+            * Next row 3
+            *
+            */
+            System.out.println();
+
+            System.out.print(WHITE_BACKGROUND);
+            for (int counter = 0; counter < 24; counter++) {
+                System.out.print(" ");
+            }
+
+            System.out.print(YELLOW_BACKGROUND);
+            for (int counter = 0; counter < 3; counter++) {
+                System.out.print(" ");
+            }
+
+            System.out.print(WHITE_BACKGROUND);
+            System.out.print(" ");
+
+            System.out.print(YELLOW_BACKGROUND);
+            System.out.print(" ");
+
+            System.out.print(WHITE_BACKGROUND);
+            System.out.print(" ");
+
+            System.out.print(YELLOW_BACKGROUND);
+            for (int counter = 0; counter < 3; counter++) {
+                System.out.print(" ");
+            }
+
+            System.out.print(WHITE_BACKGROUND);
+            for (int counter = 0; counter < 20; counter++) {
+                System.out.print(" ");
+            }
+
+            /*
+            *
+            * Next row 4
+            *
+            */
+            System.out.println();
+
+            System.out.print(WHITE_BACKGROUND);
+            for (int counter = 0; counter < 24; counter++) {
+                System.out.print(" ");
+            }
+
+            System.out.print(YELLOW_BACKGROUND);
+            for (int counter = 0; counter < 9; counter++) {
+                System.out.print(" ");
+            }
+
+            System.out.print(WHITE_BACKGROUND);
+            for (int counter = 0; counter < 20; counter++) {
+                System.out.print(" ");
+            }
+
+        }
+
+        // Resets all the colors and background colors
+        System.out.print(RESET);
+    }
+
+    /**
+    * Sets up some of the arrays that will be used in the program.
+    */
     static void setUpArrays() {
         /*
         * Makes this array cappable of holding all the ships elements
         * for both the player and the enemy
         */
-        for (int typeOfShip = 0; typeOfShip < quantityTypesOfShips; typeOfShip++) {
+        for (int typeOfShip = 0; typeOfShip < quantityTypesOfShips;
+            typeOfShip++) {
+
             allShipCoords.add(new ArrayList<ArrayList<Integer>>());
         }
 
@@ -184,13 +321,22 @@ final class Battleship {
 
     }
 
+    /**
+    * Checks all the ships for either the player or the enemy
+    * to detect if they have sunk.
+    *
+    * @param grid the grid that will be checked
+    * @param enemy wether it is the enemies grid or the players
+    */
     static void checkSink(ArrayList<ArrayList<String>> grid, int enemy) {
 
         // Goes through all types of ship sizes (1-4)
         for (int shipSize = 1; shipSize <= FOUR; shipSize++) {
 
             // Checks every ship
-            for (int ship = 0; ship < allShipQuantities.get(shipSize - ONE); ship++) {
+            for (int ship = 0; ship < allShipQuantities.get(shipSize - ONE);
+                ship++) {
+
                 int count = 0;
 
                 /*
@@ -199,19 +345,38 @@ final class Battleship {
                 * moves to the next set of coordinates
                 */
                 // Checks each set of coordinates
-                for (int shipCoord = 0; shipCoord < (shipSize * 2); shipCoord += 2) {
+                for (int shipCoord = 0; shipCoord < (shipSize * 2);
+                    shipCoord += 2) {
 
-                    if (grid.get(allShipCoords.get(shipSize + enemy - ONE).get(ship).get(shipCoord)).get(allShipCoords.get(shipSize + enemy - ONE).get(ship).get(shipCoord + 1)) == hit) {
+                    if (grid.get(allShipCoords.get(shipSize + enemy
+                        - ONE).get(ship).get(shipCoord)).get(
+                        allShipCoords.get(shipSize + enemy - ONE).get(
+                        ship).get(shipCoord + 1)) == hit) {
+
                         count++;
                     }
 
                     if (count == shipSize) {
-                        for (int counter = 0; counter < (shipSize * 2); counter += 2) {
-                            // The "+ 0" is necessary for changing the index from an Integer to an int
-                            // Removes the location to have it replaced with sunk
-                            grid.get(allShipCoords.get(shipSize + enemy - ONE).get(ship).get(shipCoord - counter)).remove(allShipCoords.get(shipSize + enemy - ONE).get(ship).get(shipCoord - counter + 1) + 0);
+                        for (int counter = 0; counter < (shipSize * 2);
+                            counter += 2) {
+                            /*
+                            * The "+ 0" is necessary for changing the index
+                            * from an Integer to an int.
+                            * Removes the location to have it
+                            * replaced with sunk.
+                            */
+                            grid.get(allShipCoords.get(shipSize + enemy
+                                - ONE).get(ship).get(shipCoord
+                                - counter)).remove(allShipCoords.get(shipSize
+                                + enemy - ONE).get(ship).get(shipCoord
+                                - counter + 1) + 0);
 
-                            grid.get(allShipCoords.get(shipSize + enemy - ONE).get(ship).get(shipCoord - counter)).add(allShipCoords.get(shipSize + enemy - ONE).get(ship).get(shipCoord - counter + 1), sunk);
+                            // Replaces the removed location with sunk
+                            grid.get(allShipCoords.get(shipSize + enemy
+                                - ONE).get(ship).get(shipCoord
+                                - counter)).add(allShipCoords.get(shipSize
+                                + enemy - ONE).get(ship).get(shipCoord
+                                - counter + 1), sunk);
                         }
                         System.out.print("\n\nSHIP SUNK\n\n");
                     }
@@ -284,7 +449,8 @@ final class Battleship {
     *
     * @param playerGrid the enemies grid
     */
-    public static void enemyTurn(final ArrayList<ArrayList<String>> playerGrid) {
+    public static void enemyTurn(
+        final ArrayList<ArrayList<String>> playerGrid) {
 
         do {
 
@@ -296,7 +462,10 @@ final class Battleship {
         // Picks a random row that is not higher than the total rows
         final int columnCoord = randCol.nextInt(numCol);
 
-        // Determines the alphabetical value of the random horizontal coordinate
+        /*
+        * Determines the alphabetical value of the random
+        * horizontal coordinate
+        */
         String horizontalCoordStr = Character.toString(alphabet[columnCoord]);
 
         // If the selected place is blank
@@ -329,8 +498,9 @@ final class Battleship {
             // Sets the color to bold white
             System.out.print(BOLD_WHITE);
 
-            System.out.println("The computer chose the vertical coordinate of "
-                + rowCoord + " and the horizontal coordinate of " + horizontalCoordStr);
+            System.out.println("The computer chose the vertical"
+                + " coordinate of " + rowCoord + " and the horizontal"
+                + " coordinate of " + horizontalCoordStr);
 
             // Resets the color
             System.out.print(RESET);
@@ -349,7 +519,8 @@ final class Battleship {
     *
     * @param enemyGrid the enemies grid
     */
-    public static void playerTurn(final ArrayList<ArrayList<String>> enemyGrid) {
+    public static void playerTurn(
+        final ArrayList<ArrayList<String>> enemyGrid) {
 
         // Scanners to recieve inputs
         final Scanner inputs = new Scanner(System.in);
@@ -374,7 +545,9 @@ final class Battleship {
                 * If the current index of the inputted string is equal
                 * to the current alphabetical value
                 */
-                if ((String.valueOf(bothCoords.charAt(index)).equals(Character.toString(alphabet[letter])))) {
+                if ((String.valueOf(bothCoords.charAt(index)).equals(
+                    Character.toString(alphabet[letter])))) {
+
                     // Assigns the index of the alphabet to the column value
                     columnCoordStr += Integer.toString(letter);
                 }
@@ -386,7 +559,8 @@ final class Battleship {
                 /*
                 * Checks if the current index is the current row
                 */
-                if (String.valueOf(bothCoords.charAt(index)).equals(Integer.toString(row))) {
+                if (String.valueOf(bothCoords.charAt(index)).equals(
+                    Integer.toString(row))) {
 
                     /*
                     * Will "add" the current index to the row coord.
@@ -456,11 +630,13 @@ final class Battleship {
 
         // If the location selected is not on the grid
         } else {
-            System.out.println("\nYou must select a loctaion within the grid\n\n");
+            System.out.println("\nYou must select a loctaion"
+                + " within the grid\n\n");
             throw new java.util.InputMismatchException();
         }
 
-        System.out.println("You chose (" + rowCoord + ", " + alphabet[columnCoord] + ")");
+        System.out.println("You chose (" + rowCoord + ", "
+            + alphabet[columnCoord] + ")");
 
         try {
             /*
@@ -472,6 +648,12 @@ final class Battleship {
         }
     }
 
+    /**
+    * Gets a letter from an integer.
+    *
+    * @param number the number to be used
+    * @return the letter to be returned
+    */
     public static String getLetter(int number) {
 
         String returnValue = "";
@@ -492,7 +674,12 @@ final class Battleship {
 
 
 
-    // The main game
+    /**
+    * The heart of the game, where both players take their turn.
+    *
+    * @param playerGrid the players grid
+    * @param enemyGrid the enemies grid
+    */ 
     static void playGame(final ArrayList<ArrayList<String>> playerGrid,
                          final ArrayList<ArrayList<String>> enemyGrid) {
 
@@ -533,7 +720,8 @@ final class Battleship {
                 */
                 Thread.currentThread().sleep(2000);
 
-                final String currentResult = gameResult(playerGrid, enemyGrid);
+                final String currentResult
+                    = gameResult(playerGrid, enemyGrid);
 
                 /*
                 * Checks a function to see if the game is over.
@@ -614,7 +802,9 @@ final class Battleship {
             * Determines how many spaces to leave between the row
             * value and the grid
             */
-            for (int counter = 0; counter < (String.valueOf(numRows - 1).length() - String.valueOf(row).length()); counter++) {
+            for (int counter = 0; counter < (String.valueOf(numRows
+                - 1).length() - String.valueOf(row).length()); counter++) {
+
                 System.out.print(" ");
             }
 
@@ -700,10 +890,12 @@ final class Battleship {
                     System.out.print(YELLOW);
 
                 } else {
-                    currentIndexNumber = Integer.parseInt(grid.get(row).get(column));
+                    currentIndexNumber = Integer.parseInt(grid.get(
+                        row).get(column));
                 }
 
-                if (currentIndexNumber == 4 || currentIndexNumber == 3 || currentIndexNumber == 2 || currentIndexNumber == 1) {
+                if (currentIndexNumber == 4 || currentIndexNumber == 3
+                    || currentIndexNumber == 2 || currentIndexNumber == 1) {
                     // Resets the color
                     System.out.print(RESET);
                 }
@@ -723,7 +915,8 @@ final class Battleship {
     * @param shipSize how large the ship is
     * @return returns whether it is true or false
     */
-    static boolean isHorizontalnValid(final ArrayList<ArrayList<String>> initialGrid, final int shipSize) {
+    static boolean isHorizontalnValid(
+        final ArrayList<ArrayList<String>> initialGrid, final int shipSize) {
 
         // Checks all the rows
         for (int row = 0; row < numRows; row++) {
@@ -752,7 +945,8 @@ final class Battleship {
     * @param shipSize how large the ship is
     * @return returns whether it is true or false
     */
-    static boolean isVerticalValid(final ArrayList<ArrayList<String>> initialGrid, final int shipSize) {
+    static boolean isVerticalValid(
+        final ArrayList<ArrayList<String>> initialGrid, final int shipSize) {
 
         // Checks all the rows
         for (int row = 0; row < numRows; row++) { 
@@ -783,7 +977,10 @@ final class Battleship {
     * @param shipSize how large the ship is
     * @return the new grid with ships
     */
-    static ArrayList<ArrayList<String>> generateEachShip(final ArrayList<ArrayList<String>> initialGrid, final int shipSize, final int enemy) {
+    static ArrayList<ArrayList<String>> generateEachShip(
+        final ArrayList<ArrayList<String>> initialGrid, final int shipSize,
+        final int enemy) {
+
         // This array list is only used to return that the attempt has failed.
         final ArrayList<ArrayList<String>> fail =
             new ArrayList<ArrayList<String>>();
@@ -804,12 +1001,17 @@ final class Battleship {
                 Random randTwo = new Random();
                 // Picks a random column that is not higher than 10
                 final int randCol = rand.nextInt(numCol);
-                // Picks a random row from the 0th to the last which happens to be 4
+                /*
+                * Picks a random row from the 0th to the last which
+                * happens to be 4
+                */
                 final int randRow = randTwo.nextInt(numRows - shipSize + 1);
 
                 int count = 0;
                 for (int counter = 0; counter < shipSize; counter++) {
-                    if (returnGrid.get(randRow + counter).get(randCol) == blank) {
+                    if (returnGrid.get(randRow + counter).get(randCol)
+                        == blank) {
+
                         count++;
                     }
                     if (count == shipSize) {
@@ -817,10 +1019,15 @@ final class Battleship {
                         // Generates the ship
                         for (int row = 0; row < shipSize; row++) {
                             returnGrid.get(randRow + row).remove(randCol);
-                            returnGrid.get(randRow + row).add(randCol, "" + shipSize);
+                            returnGrid.get(randRow + row).add(randCol, ""
+                                + shipSize);
 
-                            allShipCoords.get(shipSize + enemy - ONE).get(allShipCoords.get(shipSize + enemy - ONE).size() - 1).add(randRow + row);
-                            allShipCoords.get(shipSize + enemy - ONE).get(allShipCoords.get(shipSize + enemy - ONE).size() - 1).add(randCol);
+                            allShipCoords.get(shipSize + enemy - ONE).get(
+                                allShipCoords.get(shipSize + enemy
+                                - ONE).size() - 1).add(randRow + row);
+                            allShipCoords.get(shipSize + enemy - ONE).get(
+                                allShipCoords.get(shipSize + enemy
+                                - ONE).size() - 1).add(randCol);
                         }
 
                         // A ship has now been generated
@@ -830,28 +1037,43 @@ final class Battleship {
                 
 
             // Horizontal    
-            } else if (orientation == 1 && isHorizontalnValid(returnGrid, shipSize)) {
+            } else if (orientation == 1 && isHorizontalnValid(
+                returnGrid, shipSize)) {
+
                 Random rand = new Random();
                 Random randTwo = new Random();
 
                 // Picks a random column that is not higher than 10
                 final int randCol = rand.nextInt(numCol - shipSize + 1);
-                // Picks a random row from the 0th to the last which happens to be 4
+                /*
+                * Picks a random row from the 0th to the last which
+                * happens to be 4
+                */
                 final int randRow = randTwo.nextInt(numRows);
 
                 int count = 0;
                 for (int counter = 0; counter < shipSize; counter++) {
-                    if (returnGrid.get(randRow).get(randCol + counter) == blank) {
+                    if (returnGrid.get(randRow).get(randCol + counter)
+                        == blank) {
+
                         count++;
                     }
                     if (count == shipSize) {
                         for (int column = 0; column < shipSize; column++) {
                             returnGrid.get(randRow).remove(randCol + column);
-                            returnGrid.get(randRow).add(randCol + column, Integer.toString(shipSize));
+                            returnGrid.get(randRow).add(randCol + column,
+                                Integer.toString(shipSize));
  
-                            // .size() gets the size of the array, but the index we need is always one less
-                            allShipCoords.get(shipSize + enemy - ONE).get(allShipCoords.get(shipSize + enemy - ONE).size() - 1).add(randRow);
-                            allShipCoords.get(shipSize + enemy - ONE).get(allShipCoords.get(shipSize + enemy - ONE).size() - 1).add(randCol + column);
+                            /*
+                            * .size() gets the size of the array, but the
+                            * index we need is always one less
+                            */
+                            allShipCoords.get(shipSize + enemy - ONE).get(
+                                allShipCoords.get(shipSize + enemy
+                                - ONE).size() - 1).add(randRow);
+                            allShipCoords.get(shipSize + enemy - ONE).get(
+                                allShipCoords.get(shipSize + enemy
+                                - ONE).size() - 1).add(randCol + column);
 
                         }
                         // a ship has now been generated
@@ -873,7 +1095,9 @@ final class Battleship {
     * @param shipSize how large the ship is
     * @return the new grid with ships
     */
-    static ArrayList<ArrayList<String>> generateShips(final ArrayList<ArrayList<String>> initialGrid, final int enemy) {
+    static ArrayList<ArrayList<String>> generateShips(
+        final ArrayList<ArrayList<String>> initialGrid, final int enemy) {
+
         ArrayList<ArrayList<String>> returnGrid =
             new ArrayList<ArrayList<String>>();
 
@@ -883,15 +1107,23 @@ final class Battleship {
         for (int shipSize = 1; shipSize <= FOUR; shipSize++) {
 
             // Makes all the ships of type of quantity
-            for (int counter = 0; counter < allShipQuantities.get(shipSize - ONE); counter++) {
-                // Makes a new ship coordinate tracker for either the player (0) or the enemy (4)
-                allShipCoords.get(shipSize + enemy - ONE).add(new ArrayList<Integer>());
+            for (int counter = 0; counter < allShipQuantities.get(shipSize
+                - ONE); counter++) {
+                /*
+                * Makes a new ship coordinate holder for either the player
+                * or the enemy
+                */
+                allShipCoords.get(shipSize + enemy - ONE).add(
+                    new ArrayList<Integer>());
 
                 if (returnGrid.get(0).get(0) == "fail") {
-                    System.out.println("Could not print " + allShipQuantities.get(shipSize - ONE) + " " + shipSize);
+                    System.out.println("Could not print "
+                        + allShipQuantities.get(shipSize - ONE) + " "
+                        + shipSize);
                     break;
                 } else {
-                    returnGrid = generateEachShip(returnGrid, shipSize, enemy);
+                    returnGrid = generateEachShip(returnGrid, shipSize,
+                        enemy);
                 }
             }
         }
@@ -939,7 +1171,8 @@ final class Battleship {
 
         // Checks if there are more columns than letters
         if (numCol > 26) {
-            System.out.println("There are too many columns. Please make it between 1 and 26");
+            System.out.println("There are too many columns. Please make it"
+                + " between 1 and 26");
             // Ends the program
             System.exit(0);
         }
@@ -969,7 +1202,12 @@ final class Battleship {
             printEnemyGrid(enemyGrid);
             printGrid(enemyGrid);
         }
-        if (playerGrid.get(0).get(0) != "fail" && enemyGrid.get(0).get(0) != "fail") {
+
+        pixelArt("ship");
+
+        if (playerGrid.get(0).get(0) != "fail" && enemyGrid.get(0).get(0)
+            != "fail") {
+
             playGame(playerGrid, enemyGrid);
         }
     }
