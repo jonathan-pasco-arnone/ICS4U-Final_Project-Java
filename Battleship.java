@@ -186,17 +186,6 @@ final class Battleship {
     */
     static void pixelArt(final String title) {
 
-        try{
-            BufferedImage image = ImageIO.read(new File("/tmp/input.jpg"));
-
-            image.getGraphics().drawLine(1, 1, image.getWidth()-1, image.getHeight()-1);
-            image.getGraphics().drawLine(1, image.getHeight()-1, image.getWidth()-1, 1);
-
-            ImageIO.write(image, "png", new File("/tmp/output.png"));
-         } catch (IOException e){
-             e.printStackTrace();
-         }
-
         // 52 columns, 40 rows
         // Prints a pixel art battleship
         if (title.equals("ship")) {
@@ -1167,8 +1156,6 @@ final class Battleship {
 
         System.out.println("This is the Battleship program\n");
 
-        System.out.println("\007");
-
         // Checks if there are more columns than letters
         if (numCol > 26) {
             System.out.println("There are too many columns. Please make it"
@@ -1200,10 +1187,10 @@ final class Battleship {
             System.out.println(enemyGridStr);
             // Prints the enemies grid from the players perspective
             printEnemyGrid(enemyGrid);
-            printGrid(enemyGrid);
         }
 
-        pixelArt("ship");
+        // Not ready
+//      pixelArt("ship");
 
         if (playerGrid.get(0).get(0) != "fail" && enemyGrid.get(0).get(0)
             != "fail") {
