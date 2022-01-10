@@ -127,11 +127,15 @@ final class Battleship {
     */
     private static String CYAN_BACKGROUND = "\033[46m";
     /**
-    * Unicode for changing text bacground to yellow.
+    * Unicode for changing text background to yellow.
     */
     private static String YELLOW_BACKGROUND = "\033[43m";
     /**
-    * Unicode for changing text bacground to white.
+    * Unicode for changing text background to magenta.
+    */
+    private static String MAGENTA_BACKGROUND = "\033[45m";
+    /**
+    * Unicode for changing text background to white.
     */
     private static String WHITE_BACKGROUND = "\033[47m";
     /**
@@ -168,6 +172,15 @@ final class Battleship {
     private static int maxCharValue = 9;
 
     /**
+    * The size of one block in the pixel function.
+    */
+    private static String onePixel = "    ";
+    /**
+    * The length of a Y.
+    */
+    private static int lengthOfY = 5;
+
+    /**
     * Prevent instantiation
     * Throw an exception IllegalStateException.
     * if this ever is called
@@ -186,8 +199,76 @@ final class Battleship {
     */
     static void pixelArt(final String title) {
 
+        if (title.equals("you win")) {
+            // Starting buffer of magenta
+            System.out.println(MAGENTA_BACKGROUND);
+            for (int counter = 0; counter < 23; counter++) {
+                System.out.println(" ");
+            }
+
+            // Top two blocks of the Y / Top of O / Top of U
+            System.out.print("            " + WHITE_BACKGROUND + onePixel);
+            System.out.print(MAGENTA_BACKGROUND);
+            System.out.print("            " + WHITE_BACKGROUND + onePixel);
+            System.out.println(MAGENTA_BACKGROUND);
+            System.out.print("            " + WHITE_BACKGROUND + onePixel);
+            System.out.print(MAGENTA_BACKGROUND);
+            System.out.print("            " + WHITE_BACKGROUND + onePixel);
+
+            // Second to top two blocks of the Y
+            System.out.println(MAGENTA_BACKGROUND);
+            System.out.print("             " + WHITE_BACKGROUND + onePixel);
+            System.out.print(MAGENTA_BACKGROUND);
+            System.out.print("          " + WHITE_BACKGROUND + onePixel);
+            System.out.println(MAGENTA_BACKGROUND);
+            System.out.print("             " + WHITE_BACKGROUND + onePixel);
+            System.out.print(MAGENTA_BACKGROUND);
+            System.out.print("          " + WHITE_BACKGROUND + onePixel);
+
+            // Third to top two blocks of the Y
+            System.out.println(MAGENTA_BACKGROUND);
+            System.out.print("              " + WHITE_BACKGROUND + onePixel);
+            System.out.print(MAGENTA_BACKGROUND);
+            System.out.print("        " + WHITE_BACKGROUND + onePixel);
+            System.out.println(MAGENTA_BACKGROUND);
+            System.out.print("              " + WHITE_BACKGROUND + onePixel);
+            System.out.print(MAGENTA_BACKGROUND);
+            System.out.print("        " + WHITE_BACKGROUND + onePixel);
+
+            // Fourth to top two blocks of the Y
+            System.out.println(MAGENTA_BACKGROUND);
+            System.out.print("               " + WHITE_BACKGROUND + onePixel);
+            System.out.print(MAGENTA_BACKGROUND);
+            System.out.print("      " + WHITE_BACKGROUND + onePixel);
+            System.out.println(MAGENTA_BACKGROUND);
+            System.out.print("               " + WHITE_BACKGROUND + onePixel);
+            System.out.print(MAGENTA_BACKGROUND);
+            System.out.print("      " + WHITE_BACKGROUND + onePixel);
+
+            // Where the two blocks of the Y allign
+            System.out.println(MAGENTA_BACKGROUND);
+            System.out.print("                " + WHITE_BACKGROUND + onePixel + onePixel + onePixel);
+            System.out.println(MAGENTA_BACKGROUND);
+            System.out.print("                " + WHITE_BACKGROUND + onePixel + onePixel + onePixel);
+
+            // The bottom stick of the Y
+            for (int counter = 0; counter < lengthOfY; counter++) {
+                System.out.println(MAGENTA_BACKGROUND);
+                System.out.print("                    " + WHITE_BACKGROUND + onePixel);
+                System.out.println(MAGENTA_BACKGROUND);
+                System.out.print("                    " + WHITE_BACKGROUND + onePixel);
+            }
+
+            // Ending buffer of magenta
+            System.out.println(MAGENTA_BACKGROUND);
+            for (int counter = 0; counter < 23; counter++) {
+                System.out.println(" ");
+            }
+        }
+
         // 52 columns, 40 rows
         // Prints a pixel art battleship
+        // NOT READY!!
         if (title.equals("ship")) {
 
             System.out.print(WHITE_BACKGROUND);
@@ -1190,12 +1271,12 @@ final class Battleship {
         }
 
         // Not ready
-//      pixelArt("ship");
-
+        pixelArt("you win");
+/*
         if (playerGrid.get(0).get(0) != "fail" && enemyGrid.get(0).get(0)
             != "fail") {
 
             playGame(playerGrid, enemyGrid);
-        }
+        }*/
     }
 }
