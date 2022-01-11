@@ -201,7 +201,7 @@ final class Battleship {
             + " labelled\n       \"Enemy Grid\" will display that.\n    2. "
             + "After your turn, the enemy will select a random location to"
             + " attack, and it will be displayed on your grid in the same way"
-            + " as your attacks display in their's.\n    3. The first person "
+            + " as your attacks display in theirs.\n    3. The first person "
             + "to sink all the opposing person's ships is the winner\n    4. "
             + "Have Fun! ;)");
 
@@ -649,21 +649,16 @@ final class Battleship {
                 if (currentResult.equals("player win")) {
                     gameOn = false;
 
-                    System.out.println("\n\n");
-                    System.out.print(MAGENTA_BOLD);
-                    System.out.print(CYAN_BACKGROUND);
-                    System.out.print("YOU WIN!!");
-                    System.out.print(RESET);
+                    // Prints pixel art of "You Win"
+                    artPrinter.pixelArt("you win", MAGENTA_BACKGROUND, WHITE_BACKGROUND);
                     System.out.println();
 
                     break;
                 } else if (currentResult.equals("enemy win")) {
                     gameOn = false;
 
-                    System.out.println("\n\n");
-                    System.out.print(MAGENTA_BOLD);
-                    System.out.print(CYAN_BACKGROUND);
-                    System.out.print(RESET);
+                    // Soon to be you lose
+                    artPrinter.pixelArt("you", MAGENTA_BACKGROUND, WHITE_BACKGROUND);
                     System.out.println();
 
                     break;
@@ -1084,7 +1079,7 @@ final class Battleship {
     public static void main(final String[] args) {
         setUpArrays();
 
-// temp disabeled       rulesAndStart();
+        rulesAndStart();
 
         // Checks if there are more columns than letters
         if (numCol > 26) {
@@ -1119,13 +1114,10 @@ final class Battleship {
             printEnemyGrid(enemyGrid);
         }
 
-        // Not ready
-        artPrinter.pixelArt("you win", MAGENTA_BACKGROUND, WHITE_BACKGROUND);
-/*
         if (playerGrid.get(0).get(0) != "fail" && enemyGrid.get(0).get(0)
             != "fail") {
 
             playGame(playerGrid, enemyGrid);
-        }*/
+        }
     }
 }
